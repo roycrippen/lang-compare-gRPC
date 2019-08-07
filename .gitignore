@@ -31,8 +31,13 @@
 *.out
 *.app
 
+# cpp pb files
+# *.pb.cc
+# *.pb.h
+
 # python pb2 files
-*_pb2_*
+*_pb2.py
+*_pb2_grpc.py
 
 
 

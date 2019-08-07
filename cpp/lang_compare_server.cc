@@ -28,11 +28,6 @@ string applyXorCipher(string const &key, string const &cs) {
 
 // Logic and data behind the server's behavior.
 class LangCompareServiceImpl final : public LangCompare::Service {
-//  Status SayHello(ServerContext* context, const HelloRequest* request, HelloReply* reply) override {
-//    string prefix("Hello ");
-//    reply->set_message(prefix + request->name());
-//    return Status::OK;
-//  }
     Status XorCipher(ServerContext* context, const XorCipherRequest* request, XorCipherReply* reply) override {
 //        cout << "key: " << request->key() << ", in_str: " << request->in_str() << "\n";
         auto res = applyXorCipher(request->key(), request->in_str());
