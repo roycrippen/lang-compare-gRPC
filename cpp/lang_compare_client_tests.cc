@@ -62,12 +62,14 @@ void test_xor_cipher_cpp() {
         in_str+= to_string(num);
         string encrypted_reply = compare.xorCipher(key, in_str);
         string decrypted_reply = compare.xorCipher(key, encrypted_reply);
+        assert(in_str == decrypted_reply);
     }
     string in_str("message");
     in_str+= to_string(num - 1);
     string encrypted_reply = compare.xorCipher(key, in_str);
     string decrypted_reply = compare.xorCipher(key, encrypted_reply);
     cout << "last message: " << decrypted_reply << endl;
+    assert(in_str == decrypted_reply);
 }
 
 int main(int argc, char **argv) {
