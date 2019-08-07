@@ -6,6 +6,7 @@ import lang_compare_pb2
 import lang_compare_pb2_grpc
 
 
+# noinspection DuplicatedCode
 def run():
     port_python = 'localhost:50052'
     print("Connecting to python lang-compare server at: {}".format(port_python))
@@ -18,7 +19,7 @@ def run():
     stub_cpp = lang_compare_pb2_grpc.LangCompareStub(channel_cpp)
 
     key = "my key"
-    num = 1000
+    num = 1_000
     print("calling python then C++ xor_cipher {} times".format(num * 2))
     decrypted = ""
     for i in range(num):

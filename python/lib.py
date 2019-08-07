@@ -1,4 +1,4 @@
-def xor_cipher(in_str, key):
+def xor_cipher(key, in_str):
     key_len = len(key)
     ks = bytearray(key, encoding='utf-8')
     xs = bytearray()
