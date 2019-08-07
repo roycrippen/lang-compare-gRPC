@@ -1,4 +1,4 @@
-# python gRPC
+# python lang-compare-gRPC
 
 depends on grpcio and grpcio-tools
 
@@ -21,7 +21,7 @@ $ python3 -m grpc_tools.protoc -I../protos --python_out=. --grpc_python_out=. ..
 $ python3 lang_compare_server.py 
 ```
 
-### then run client 
+### then run client tests
 ```bash
-$ python3 lang_compare_client.py  
+$ python3 lang_compare_client_tests.py  
 ```

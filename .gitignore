@@ -31,3 +31,8 @@
 *.out
 *.app
 
+# python pb2 files
+*_pb2_*
+
+
+
