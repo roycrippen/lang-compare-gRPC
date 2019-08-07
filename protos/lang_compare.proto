@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "HLW";
+
+package langcompare;
+
+// The greeting service definition.
+service LangCompare {
+  rpc XorCipher (XorCipherRequest) returns (XorCipherReply) {}
+}
+
+// The request message containing the input string and key.
+message XorCipherRequest {
+  string in_str = 1;
+  string key = 2;
+}
+
+// The response message containing the xored input string
+message XorCipherReply {
+  string out_str = 1;
+}
