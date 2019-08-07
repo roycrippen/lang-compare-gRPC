@@ -4,8 +4,8 @@ depends on grpcio and grpcio-tools
 
 ### install dependencies
 ```bash
-$ pip install grpcio --user
-$ pip install grpcio-tools --user
+$ pip3 install grpcio --user
+$ pip3 install grpcio-tools --user
 ```
 
 ### compile proto
