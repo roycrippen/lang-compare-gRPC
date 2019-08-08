@@ -44,8 +44,8 @@ $ make
 $ ./lang_compare_server
 ```
 
-### run test client (new terminal)
+### run server test (in new terminal)
 ```bash
-# run client tests
-$ ./lang_compare_client_tests
+# run server test
+$ ./test_cpp_server
 ```
