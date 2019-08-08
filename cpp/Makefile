@@ -18,10 +18,10 @@ vpath %.proto $(PROTOS_PATH)
 
 all: system-check lang_compare_server test_cpp_server
 
-lang_compare_server: lang_compare.pb.o lang_compare.grpc.pb.o lang_compare_server.o
+lang_compare_server: lang_compare.pb.o lang_compare.grpc.pb.o lib.o lang_compare_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-test_cpp_server: lang_compare.pb.o lang_compare.grpc.pb.o test_cpp_server.o
+test_cpp_server: lang_compare.pb.o lang_compare.grpc.pb.o lib.o test_cpp_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 .PRECIOUS: %.grpc.pb.cc

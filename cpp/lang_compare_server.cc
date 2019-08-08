@@ -4,6 +4,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include "lang_compare.grpc.pb.h"
+#include "lib.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -14,17 +15,6 @@ using langcompare::XorCipherReply;
 using langcompare::LangCompare;
 
 using namespace std;
-
-string applyXorCipher(string const &key, string const &cs) {
-    string res = cs;
-    auto mod = key.size() / sizeof(char);
-    for (u_long i = 0; i < cs.size(); i++) {
-        auto c = key[i % mod];
-        res[i] = cs[i] ^ c;
-    }
-    return res;
-}
-
 
 // Logic and data behind the server's behavior.
 class LangCompareServiceImpl final : public LangCompare::Service {

@@ -19,7 +19,7 @@ def run():
     stub_cpp = lang_compare_pb2_grpc.LangCompareStub(channel_cpp)
 
     key = "my key"
-    num = 1_000
+    num = 10_000
     print("calling python then C++ xor_cipher {} times".format(num * 2))
     decrypted = ""
     for i in range(num):
