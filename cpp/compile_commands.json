@@ -1,0 +1,62 @@
+[
+ {
+  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-pthread",
+   "-I/usr/local/include",
+   "-c",
+   "-o",
+   "lang_compare.pb.o",
+   "lang_compare.pb.cc"
+  ],
+  "file": "lang_compare.pb.cc"
+ },
+ {
+  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-pthread",
+   "-I/usr/local/include",
+   "-c",
+   "-o",
+   "lang_compare.grpc.pb.o",
+   "lang_compare.grpc.pb.cc"
+  ],
+  "file": "lang_compare.grpc.pb.cc"
+ },
+ {
+  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-pthread",
+   "-I/usr/local/include",
+   "-c",
+   "-o",
+   "lang_compare_server.o",
+   "lang_compare_server.cc"
+  ],
+  "file": "lang_compare_server.cc"
+ },
+ {
+  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-pthread",
+   "-I/usr/local/include",
+   "-c",
+   "-o",
+   "test_cpp_server.o",
+   "test_cpp_server.cc"
+  ],
+  "file": "test_cpp_server.cc"
+ }
+]

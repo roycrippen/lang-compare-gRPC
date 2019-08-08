@@ -37,12 +37,10 @@
 
 # cpp executables
 lang_compare_server
-lang_compare_client_tests
+test_cpp_server
 
 # python pb2 files
 *_pb2.py
 *_pb2_grpc.py
 
-
-
-
+*.log

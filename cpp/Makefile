@@ -1,6 +1,10 @@
 CXX = g++
 CPPFLAGS += `pkg-config --cflags protobuf grpc`
-CXXFLAGS += -std=c++11
+
+# debug on -g
+CXXFLAGS += -std=c++11 -g
+#CXXFLAGS += -std=c++11
+
 LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++ grpc`\
            -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
            -ldl
@@ -12,12 +16,12 @@ PROTOS_PATH = ../protos
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check lang_compare_server lang_compare_client_tests
+all: system-check lang_compare_server test_cpp_server
 
 lang_compare_server: lang_compare.pb.o lang_compare.grpc.pb.o lang_compare_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-lang_compare_client_tests: lang_compare.pb.o lang_compare.grpc.pb.o lang_compare_client_tests.o
+test_cpp_server: lang_compare.pb.o lang_compare.grpc.pb.o test_cpp_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 .PRECIOUS: %.grpc.pb.cc
@@ -29,7 +33,7 @@ lang_compare_client_tests: lang_compare.pb.o lang_compare.grpc.pb.o lang_compare
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h lang_compare_server lang_compare_client_tests
+	rm -f *.o *.pb.cc *.pb.h lang_compare_server test_cpp_server
 
 
 # The following is to test your system and ensure a smoother experience.
