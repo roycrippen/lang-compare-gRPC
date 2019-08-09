@@ -1,0 +1,8 @@
+
+# language compare using gRPC configuration
+
+ports:
+  - cpp: 50051
+  - python: 50052
+
+

@@ -1,42 +1,12 @@
 [
  {
-  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
   "arguments": [
    "g++",
    "-std=c++11",
    "-g",
-   "-pthread",
    "-I/usr/local/include",
-   "-c",
-   "-o",
-   "lang_compare_server.o",
-   "lang_compare_server.cc"
-  ],
-  "file": "lang_compare_server.cc"
- },
- {
-  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
-  "arguments": [
-   "g++",
-   "-std=c++11",
-   "-g",
    "-pthread",
-   "-I/usr/local/include",
-   "-c",
-   "-o",
-   "test_cpp_server.o",
-   "test_cpp_server.cc"
-  ],
-  "file": "test_cpp_server.cc"
- },
- {
-  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
-  "arguments": [
-   "g++",
-   "-std=c++11",
-   "-g",
-   "-pthread",
-   "-I/usr/local/include",
    "-c",
    "-o",
    "lang_compare.pb.o",
@@ -45,13 +15,13 @@
   "file": "lang_compare.pb.cc"
  },
  {
-  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
   "arguments": [
    "g++",
    "-std=c++11",
    "-g",
-   "-pthread",
    "-I/usr/local/include",
+   "-pthread",
    "-c",
    "-o",
    "lang_compare.grpc.pb.o",
@@ -60,18 +30,48 @@
   "file": "lang_compare.grpc.pb.cc"
  },
  {
-  "directory": "/home/crippenre/dev/python/lang-compare-gpc/cpp",
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
   "arguments": [
    "g++",
    "-std=c++11",
    "-g",
-   "-pthread",
    "-I/usr/local/include",
+   "-pthread",
    "-c",
    "-o",
    "lib.o",
    "lib.cc"
   ],
   "file": "lib.cc"
+ },
+ {
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-I/usr/local/include",
+   "-pthread",
+   "-c",
+   "-o",
+   "lang_compare_server.o",
+   "lang_compare_server.cc"
+  ],
+  "file": "lang_compare_server.cc"
+ },
+ {
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-I/usr/local/include",
+   "-pthread",
+   "-c",
+   "-o",
+   "test_cpp_server.o",
+   "test_cpp_server.cc"
+  ],
+  "file": "test_cpp_server.cc"
  }
 ]
