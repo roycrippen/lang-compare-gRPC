@@ -1,11 +1,12 @@
 # python lang-compare-gRPC
 
-depends on grpcio, grpcio-tools and pyyaml
+depends on grpcio, grpcio-tools, hypothesis and pyyaml
 
 ### install dependencies
 ```bash
 $ pip3 install grpcio --user
 $ pip3 install grpcio-tools --user
+$ pip3 install hypothesis --user
 $ pip3 install pyyaml --user
 ```
 

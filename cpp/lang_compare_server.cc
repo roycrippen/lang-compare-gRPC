@@ -10,6 +10,9 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
+
+using langcompare::PingRequest;
+using langcompare::Pong;
 using langcompare::XorCipherRequest;
 using langcompare::XorCipherReply;
 using langcompare::LangCompare;
@@ -18,9 +21,14 @@ using namespace std;
 
 // Logic and data behind the server's behavior.
 class LangCompareServiceImpl final : public LangCompare::Service {
-    Status XorCipher(ServerContext* context, const XorCipherRequest* request, XorCipherReply* reply) override {
+    Status XorCipher(ServerContext* _context, const XorCipherRequest* request, XorCipherReply* reply) override {
         auto res = applyXorCipher(request->key(), request->in_str());
         reply->set_out_str(res);
+        return Status::OK;
+    }
+
+    Status Ping(ServerContext* _context, const PingRequest* _request, Pong* _reply) override {
+        cout << "Ping received.\n";
         return Status::OK;
     }
 };

@@ -10,6 +10,7 @@ package langcompare;
 // The greeting service definition.
 service LangCompare {
   rpc XorCipher (XorCipherRequest) returns (XorCipherReply) {}
+  rpc Ping (PingRequest) returns (Pong) {}
 }
 
 // The request message containing the input string and key.
@@ -22,3 +23,7 @@ message XorCipherRequest {
 message XorCipherReply {
   string out_str = 1;
 }
+
+// ping pong
+message PingRequest {}
+message Pong {}
