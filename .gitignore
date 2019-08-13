@@ -45,4 +45,5 @@ test_cpp_server
 
 *.log
 .idea/*
-.hypothesis/*
+*/.idea/*
+*/.hypothesis/*

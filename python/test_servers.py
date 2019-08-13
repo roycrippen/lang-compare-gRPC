@@ -21,7 +21,7 @@ def call_xor_cipher_twice(stub, key, s):
     return response.out_str
 
 
-class TestEncoding(unittest.TestCase):
+class TestXorCipher(unittest.TestCase):
     # random generators
     utf8_chars = text(characters(min_codepoint=0, max_codepoint=127))
     at_least_one_utf8_char = text(characters(min_codepoint=0, max_codepoint=127), min_size=1)
@@ -39,10 +39,10 @@ class TestEncoding(unittest.TestCase):
         cls.cpp_server.port = 50051
         cls.cpp_server.stub = connect_server(cls.cpp_server.port)
 
-    @given(key=at_least_one_utf8_char, s=utf8_chars)
-    @settings(max_examples=100)
-    def test_python_xor_cipher(self, key, s):
-        self.assertEqual(xor_cipher(key, xor_cipher(key, s)), s)
+    # @given(key=at_least_one_utf8_char, s=utf8_chars)
+    # @settings(max_examples=100)
+    # def test_python_xor_cipher(self, key, s):
+    #     self.assertEqual(xor_cipher(key, xor_cipher(key, s)), s)
 
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
