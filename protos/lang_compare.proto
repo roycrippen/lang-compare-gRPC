@@ -1,21 +1,12 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_package = "io.grpc.examples.helloworld";
-option java_outer_classname = "HelloWorldProto";
-option objc_class_prefix = "HLW";
-
 package langcompare;
 
-// The greeting service definition.
+// Service definitions
 service LangCompare {
-    rpc XorCipher (XorCipherRequest) returns (XorCipherReply) {
-    }
-    rpc Ping (PingRequest) returns (Pong) {
-    }
-    rpc CallCount (CallCountRequest) returns (CallCountReply) {
-
-}
+    rpc XorCipher (XorCipherRequest) returns (XorCipherReply) {}
+    rpc Ping (PingRequest) returns (Pong) {}
+    rpc CallCount (CallCountRequest) returns (CallCountReply) {}
 }
 
 // XOR encryption key and in_str
@@ -28,14 +19,11 @@ message XorCipherReply {
 }
 
 // ping pong
-message PingRequest {
-}
-message Pong {
-}
+message PingRequest {}
+message Pong {}
 
 // server call count
-message CallCountRequest {
-}
+message CallCountRequest {}
 message CallCountReply {
   int64 out = 1;
 }
