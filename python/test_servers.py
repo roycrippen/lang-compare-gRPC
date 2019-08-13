@@ -33,6 +33,7 @@ class TestWithXorCipher(unittest.TestCase):
         unittest.TextTestRunner(verbosity=2)
         config = read_config('config.yaml')
 
+        print("\n\nConnecting to servers...")
         for item in config['servers']:
             server = Server(list(item.values())[0])
             if server.type in ['py', 'cpp']:
@@ -40,11 +41,9 @@ class TestWithXorCipher(unittest.TestCase):
             else:
                 err_str = "Invalid server type in config.yaml: {}".format(server.type)
                 raise RuntimeError(err_str)
-            # time.sleep(1)
-            # server.stub = connect_server(server.port)
             cls.servers[server.type] = server
+            time.sleep(0.5)
 
-        time.sleep(1)
         for k, v in cls.servers.items():
             v.stub = connect_server(v.port)
 
@@ -59,7 +58,7 @@ class TestWithXorCipher(unittest.TestCase):
             request = lang_compare_pb2.CallCountRequest()
             # servers will log this call so we ignore the return value
             _response = v.stub.CallCount(request)
-        time.sleep(1)
+        time.sleep(2)
         for p in cls.processes:
             p.kill()
 

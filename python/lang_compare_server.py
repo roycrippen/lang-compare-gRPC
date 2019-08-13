@@ -30,9 +30,8 @@ class LangCompare(lang_compare_pb2_grpc.LangCompareServicer):
         return lang_compare_pb2.CallCountReply(out=self.call_count)
 
 
-def serve():
-    print("")
-    port_str = 'localhost:50052'
+def serve(port):
+    port_str = 'localhost:{}'.format(port)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     lang_compare = LangCompare()
     lang_compare_pb2_grpc.add_LangCompareServicer_to_server(lang_compare, server)
@@ -70,4 +69,5 @@ def set_logger(filename=None):
 
 if __name__ == '__main__':
     root_logger = set_logger()
-    serve()
+    # todo: read port form config
+    serve(50051)

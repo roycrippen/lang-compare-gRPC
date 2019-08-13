@@ -65,8 +65,8 @@ private:
     unique_ptr<LangCompare::Stub> stub_;
 };
 
-void test_xor_cipher_cpp() {
-    LangCompareClient compare(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+void test_xor_cipher_cpp(string port) {
+    LangCompareClient compare(grpc::CreateChannel("localhost:" + port, grpc::InsecureChannelCredentials()));
     if (!compare.ping()) {
         cout << "Ping of server failed, aborting." << "\n";
         return;
@@ -91,7 +91,7 @@ void test_xor_cipher_cpp() {
 }
 
 int main(int argc, char **argv) {
-    test_xor_cipher_cpp();
+    test_xor_cipher_cpp("50052");
 
     return 0;
 }

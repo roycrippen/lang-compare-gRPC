@@ -1,25 +1,37 @@
 # language compare using gRPC configuration
 
-# servers providing the requested function execution
+# servers providing function execution
 servers:
   - py:     # python gRPC server
       type: py
-      port: 50052
+      port: 50051
       cmd: python3 lang_compare_server.py
 
   - cpp:    # cpp gRPC server
       type: cpp
-      port: 50051
+      port: 50052
       cmd: ../cpp/lang_compare_server
 
-# test runner to compare function results from multiple languages
+#  - go:    # go gRPC server
+#      type: go
+#      port: 50053
+#      cmd: ../cpp/lang_compare_server
+
+# available test runners to compare function results from multiple languages
 runners:
-  - test_xor_cipher:
+  - test_xor_cipher_py_cpp:
       type: py
       cmd: python3 -W ignore -m unittest -v test_xor_cipher.py
       langs:
         - py
         - cpp
+
+  - test_xor_cipher_py_go:
+      type: py
+      cmd: python3 -W ignore -m unittest -v test_xor_cipher.py
+      langs:
+        - py
+        - go
 
   - test_servers:
       type: py

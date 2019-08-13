@@ -45,8 +45,8 @@ class LangCompareServiceImpl final : public LangCompare::Service {
     }
 };
 
-void RunServer() {
-  string server_address("0.0.0.0:50051");
+void RunServer(const string& port) {
+  string server_address("0.0.0.0:" + port);
   LangCompareServiceImpl service;
 
   ServerBuilder builder;
@@ -67,7 +67,7 @@ void RunServer() {
 }
 
 int main(int argc, char** argv) {
-  RunServer();
+  RunServer("50052");
 
   return 0;
 }
