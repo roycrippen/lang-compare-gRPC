@@ -43,10 +43,22 @@ def read_config(file):
 class Server:
     type = ""
     port = -1
-    file = ""
+    cmd = ""
+    stub = None
 
     def __init__(self, dictionary):
         self.type = dictionary['type']
         self.port = dictionary['port']
-        self.file = dictionary['file']
+        self.cmd = dictionary['cmd']
+
+
+class Runner:
+    type = ""
+    cmd = ""
+    langs = []
+
+    def __init__(self, dictionary):
+        self.type = dictionary['type']
+        self.cmd = dictionary['cmd']
+        self.langs = dictionary['langs']
 
