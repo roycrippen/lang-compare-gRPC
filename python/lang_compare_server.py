@@ -20,6 +20,10 @@ class LangCompare(lang_compare_pb2_grpc.LangCompareServicer):
         self.xor_cnt += 1
         return lang_compare_pb2.XorCipherReply(out_str=lib.xor_cipher(request.key, request.in_str))
 
+    def Ping(self, request, context):
+        logging.info('Ping received.')
+        return lang_compare_pb2.Pong()
+
 
 def serve():
     port_str = 'localhost:50052'

@@ -44,4 +44,5 @@ test_cpp_server
 *_pb2_grpc.py
 
 *.log
+.idea/*
 .hypothesis/*
