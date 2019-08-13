@@ -2,8 +2,8 @@ import subprocess
 import time
 import unittest
 import lang_compare_pb2
-from lib import connect_server, read_config, Server
 
+from lib import connect_server, read_config, Server, Runner
 from hypothesis import given, settings
 from hypothesis.strategies import text, characters
 
@@ -24,8 +24,9 @@ class TestWithXorCipher(unittest.TestCase):
     at_least_one_utf8_char = text(characters(min_codepoint=0, max_codepoint=127), min_size=1)
 
     # server stubs
-    stubs = []
+    servers = {}
     processes = []
+    langs = []
 
     @classmethod
     def setUp(cls):
@@ -34,30 +35,39 @@ class TestWithXorCipher(unittest.TestCase):
 
         for item in config['servers']:
             server = Server(list(item.values())[0])
-            if server.type == 'py':
-                cls.processes.append(subprocess.Popen(['python3', server.file]))
-                time.sleep(1)
-            elif server.type == 'cpp':
-                cls.processes.append(subprocess.Popen([server.file]))
-                time.sleep(0.5)
+            if server.type in ['py', 'cpp']:
+                cls.processes.append(subprocess.Popen(server.cmd.split(' ')))
             else:
                 err_str = "Invalid server type in config.yaml: {}".format(server.type)
                 raise RuntimeError(err_str)
-            cls.stubs.append(connect_server(server.port))
+            # time.sleep(1)
+            # server.stub = connect_server(server.port)
+            cls.servers[server.type] = server
+
+        time.sleep(1)
+        for k, v in cls.servers.items():
+            v.stub = connect_server(v.port)
+
+        for elem in config['runners']:
+            k, v = list(elem.items())[0]
+            if k == 'test_servers':
+                cls.langs = Runner(v).langs
 
     @classmethod
     def tearDown(cls):
-        for stub in cls.stubs:
+        for k, v in cls.servers.items():
             request = lang_compare_pb2.CallCountRequest()
             # servers will log this call so we ignore the return value
-            _response = stub.CallCount(request)
+            _response = v.stub.CallCount(request)
+        time.sleep(1)
         for p in cls.processes:
             p.kill()
 
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
     def test_servers(self, key, s):
-        for stub in self.stubs:
+        for lang in self.langs:
+            stub = self.servers[lang].stub
             result = call_xor_cipher_twice(stub, key, s)
             self.assertEqual(result, s)
 
