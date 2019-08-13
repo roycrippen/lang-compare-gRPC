@@ -3,23 +3,25 @@
 # servers providing the requested function execution
 servers:
   - py:   # python gRPC server
+      type: py
       port: 50052
-      server: lang_compare_server.py
+      file: lang_compare_server.py
   - cpp:  # cpp gRPC server
+      type: cpp
       port: 50051
-      server: ../cpp/lang_compare_server
+      file: ../cpp/lang_compare_server
 
 # test runner to compare function results from multiple languages
 runners:
   - xor_cipher_py_cpp:
       type: py
-      prog: xor_cipher_compare.py
+      file: xor_cipher_compare.py
       langs:
         - py
         - cpp
   - test_servers:
       type: py
-      prog: test_servers.py
+      file: test_servers.py
       langs:
         - py
         - cpp

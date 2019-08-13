@@ -1,3 +1,4 @@
+import yaml
 import grpc
 # from grpc._channel import _Rendezvous
 
@@ -28,3 +29,24 @@ def connect_server(port):
         raise e
 
     return stub
+
+
+def read_config(file):
+    with open(file, 'r') as stream:
+        try:
+            config = yaml.safe_load(stream)
+            return config
+        except yaml.YAMLError as exc:
+            print(exc)
+
+
+class Server:
+    type = ""
+    port = -1
+    file = ""
+
+    def __init__(self, dictionary):
+        self.type = dictionary['type']
+        self.port = dictionary['port']
+        self.file = dictionary['file']
+

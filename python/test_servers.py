@@ -1,14 +1,11 @@
+import subprocess
+import time
 import unittest
 import lang_compare_pb2
-from lib import xor_cipher, connect_server
+from lib import connect_server, read_config, Server
 
 from hypothesis import given, settings
 from hypothesis.strategies import text, characters
-
-
-class CConnect:
-    port = -1
-    stub = None
 
 
 def call_xor_cipher_twice(stub, key, s):
@@ -21,40 +18,48 @@ def call_xor_cipher_twice(stub, key, s):
     return response.out_str
 
 
-class TestXorCipher(unittest.TestCase):
+class TestWithXorCipher(unittest.TestCase):
     # random generators
     utf8_chars = text(characters(min_codepoint=0, max_codepoint=127))
     at_least_one_utf8_char = text(characters(min_codepoint=0, max_codepoint=127), min_size=1)
 
-    # servers
-    py_server = CConnect()
-    cpp_server = CConnect()
+    # server stubs
+    stubs = []
+    processes = []
 
     @classmethod
-    def setUpClass(cls):
+    def setUp(cls):
         unittest.TextTestRunner(verbosity=2)
-        cls.py_server.port = 50052
-        cls.py_server.stub = connect_server(cls.py_server.port)
+        config = read_config('config.yaml')
 
-        cls.cpp_server.port = 50051
-        cls.cpp_server.stub = connect_server(cls.cpp_server.port)
+        for item in config['servers']:
+            server = Server(list(item.values())[0])
+            if server.type == 'py':
+                cls.processes.append(subprocess.Popen(['python3', server.file]))
+                time.sleep(1)
+            elif server.type == 'cpp':
+                cls.processes.append(subprocess.Popen([server.file]))
+                time.sleep(0.5)
+            else:
+                err_str = "Invalid server type in config.yaml: {}".format(server.type)
+                raise RuntimeError(err_str)
+            cls.stubs.append(connect_server(server.port))
 
-    # @given(key=at_least_one_utf8_char, s=utf8_chars)
-    # @settings(max_examples=100)
-    # def test_python_xor_cipher(self, key, s):
-    #     self.assertEqual(xor_cipher(key, xor_cipher(key, s)), s)
+    @classmethod
+    def tearDown(cls):
+        for stub in cls.stubs:
+            request = lang_compare_pb2.CallCountRequest()
+            # servers will log this call so we ignore the return value
+            _response = stub.CallCount(request)
+        for p in cls.processes:
+            p.kill()
 
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
-    def test_python_server(self, key, s):
-        result = call_xor_cipher_twice(self.py_server.stub, key, s)
-        self.assertEqual(result, s)
-
-    @given(key=at_least_one_utf8_char, s=utf8_chars)
-    @settings(max_examples=100)
-    def test_cpp_server(self, key, s):
-        result = call_xor_cipher_twice(self.cpp_server.stub, key, s)
-        self.assertEqual(result, s)
+    def test_servers(self, key, s):
+        for stub in self.stubs:
+            result = call_xor_cipher_twice(stub, key, s)
+            self.assertEqual(result, s)
 
 
 if __name__ == '__main__':
