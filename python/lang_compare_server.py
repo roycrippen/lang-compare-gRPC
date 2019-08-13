@@ -48,21 +48,22 @@ def serve():
                 time.sleep(_ONE_DAY_IN_SECONDS)
         except KeyboardInterrupt:
             server.stop(0)
-            # logging.info("xor_cipher call count: {:,} ".format(lang_compare.xor_cnt))
-            # logging.info("Server stopped on port: {} ".format(port_str))
 
 
-def set_logger():
-    # file logging
+def set_logger(filename=None):
     fmt_str = '[%(levelname)s:Py  Server] -> %(message)s'
-    logging.basicConfig(filename='lang-compare-server.log', filemode='w', level=logging.INFO, format=fmt_str)
-    root = logging.getLogger()
 
-    # console logging
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.INFO)
-    handler.setFormatter(logging.Formatter(fmt_str))
-    root.addHandler(handler)
+    if filename is not None:  # file and stdout
+        logging.basicConfig(filename=filename, filemode='w', level=logging.INFO, format=fmt_str)
+        logging.basicConfig(level=logging.INFO, format=fmt_str)
+        root = logging.getLogger()
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setLevel(logging.INFO)
+        handler.setFormatter(logging.Formatter(fmt_str))
+        root.addHandler(handler)
+    else:
+        logging.basicConfig(level=logging.INFO, format=fmt_str)
+        root = logging.getLogger()
 
     return root
 
