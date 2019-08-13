@@ -4,6 +4,10 @@ depends on [gRPC](https://github.com/grpc/grpc) and [protoc](https://github.com/
 
 go [here](https://github.com/grpc/grpc/blob/master/BUILDING.md) for gRPC detailed install instructions
 
+
+also see [python dependencies](../python/README.md)
+
+
 ### install dependencies (Ubuntu)
 ```bash
 # build dependencies
