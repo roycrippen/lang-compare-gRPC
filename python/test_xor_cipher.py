@@ -1,10 +1,8 @@
-import sys
-import lang_compare_pb2
-import pytest
-
-from lib import read_config, Server, set_stub
 from hypothesis import given, settings
 from hypothesis.strategies import text, characters
+
+import lang_compare_pb2
+from lib import load_server_stubs
 
 
 def call_xor_cipher_twice(stub0, stub1, key, s):
@@ -18,7 +16,8 @@ def call_xor_cipher_twice(stub0, stub1, key, s):
 
 
 class TestXorCipher:
-    # gRPC stubs
+    # server and stubs
+    servers = {}
     stub_py = None
     stub_cpp = None
 
@@ -28,14 +27,9 @@ class TestXorCipher:
 
     @classmethod
     def setup_class(cls):
-        config = read_config('config.yaml')
-        servers = {}
-        for k, v in config['servers'].items():
-            servers[k] = Server(v)
-        print("\n\nConnecting to servers...")
-
-        cls.stub_py = set_stub('py', servers['py_example'].port)
-        cls.stub_cpp = set_stub('cpp', servers['cpp_example'].port)
+        cls.servers = load_server_stubs('config.yaml')
+        cls.stub_py = cls.servers['py_example'].stub
+        cls.stub_cpp = cls.servers['cpp_example'].stub
 
     @classmethod
     def teardown_class(cls):

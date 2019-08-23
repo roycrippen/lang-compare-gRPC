@@ -53,6 +53,15 @@ def read_config(file):
             print(exc)
 
 
+def load_server_stubs(file):
+    config = read_config('config.yaml')
+    servers = {}
+    for k, v in config['servers'].items():
+        servers[k] = Server(v)
+        servers[k].stub = set_stub(servers[k].type, servers[k].port)
+    return servers
+
+
 class Server:
     type = ""
     port = -1
