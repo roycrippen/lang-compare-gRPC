@@ -1,49 +1,41 @@
 # language compare using gRPC configuration
 
+
 # servers providing function execution
 servers:
-  - py:     # python gRPC server
-      type: py
-      port: 50051
-      cmd: python3 lang_compare_server.py
+  # python gRPC server
+  py:
+    type: py
+    port: 50051
+    cmd: python3 lang_compare_server.py
 
-  - cpp:    # cpp gRPC server
-      type: cpp
-      port: 50052
-      cmd: ../cpp/lang_compare_server
+  # cpp gRPC server
+  cpp:
+    type: cpp
+    port: 50052
+    cmd: ../cpp/lang_compare_server
 
 #  - go:    # go gRPC server
 #      type: go
 #      port: 50053
 #      cmd: ../cpp/lang_compare_server
 
+
 # available test runners to compare function results from multiple languages
 runners:
-  - test_xor_cipher_py_cpp:
-      type: py
-      cmd: python3 -W ignore -m unittest -v test_xor_cipher.py
-      langs:
-        - py
-        - cpp
+  # compare language implementations of xor cipher
+  # current implementations: py vs cpp
+  test_xor_cipher:
+    cmd: pytest test_xor_cipher.py --hypothesis-show-statistics --disable-warnings -v
 
-  - test_xor_cipher_py_go:
-      type: py
-      cmd: python3 -W ignore -m unittest -v test_xor_cipher.py
-      langs:
-        - py
-        - go
+  # test that each server type is working
+  # current servers tested: [py, cpp]
+  test_servers:
+    cmd: pytest test_servers.py --hypothesis-show-statistics --disable-warnings -v
 
-  - test_servers:
-      type: py
-      cmd: python3 -W ignore -m unittest -v test_servers.py
-      langs:
-        - py
-        - cpp
-        - cpp
 
 # list of runs to execute
 runs:
-  #  - test_xor_cipher
   - test_servers
-  - test_servers
+  - test_xor_cipher
 
