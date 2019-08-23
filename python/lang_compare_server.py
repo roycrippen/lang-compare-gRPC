@@ -37,7 +37,9 @@ def serve(port):
     lang_compare_pb2_grpc.add_LangCompareServicer_to_server(lang_compare, server)
     port = server.add_insecure_port(port_str)
     if port == 0:
-        logging.error("Could not connect to server at port {}".format(port_str))
+        err_str = "Could not connect to server at port {}".format(port_str)
+        logging.error(err_str)
+        raise RuntimeError(err_str)
     else:
         server.start()
         msg_str = "Server listening on: {}".format(port_str)
@@ -69,5 +71,8 @@ def set_logger(filename=None):
 
 if __name__ == '__main__':
     root_logger = set_logger()
-    # todo: read port form config
-    serve(50051)
+    config = lib.read_config('config.yaml')
+    port = 50051
+    if 'servers' in config and 'py' in config['servers'] and 'port' in config['servers']['py']:
+        port = config['servers']['py']['port']
+    serve(port)
