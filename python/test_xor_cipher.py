@@ -1,24 +1,23 @@
-import subprocess
-import time
-import unittest
+import sys
 import lang_compare_pb2
+import pytest
 
 from lib import read_config, Server, set_stub
 from hypothesis import given, settings
 from hypothesis.strategies import text, characters
 
 
-def call_xor_cipher_twice(stub, key, s):
+def call_xor_cipher_twice(stub0, stub1, key, s):
     # first call
     request = lang_compare_pb2.XorCipherRequest(key=key, in_str=s)
-    response = stub.XorCipher(request)
+    response = stub0.XorCipher(request)
     # second call with result from first
     request = lang_compare_pb2.XorCipherRequest(key=key, in_str=response.out_str)
-    response = stub.XorCipher(request)
+    response = stub1.XorCipher(request)
     return response.out_str
 
 
-class TestServers:
+class TestXorCipher:
     # gRPC stubs
     stub_py = None
     stub_cpp = None
@@ -48,12 +47,18 @@ class TestServers:
     # hypothesis property based tests
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
-    def test_server_py(self, key, s):
-        result = call_xor_cipher_twice(self.stub_py, key, s)
+    def test_py_cpp(self, key, s):
+        result = call_xor_cipher_twice(self.stub_py, self.stub_cpp, key, s)
         assert (result == s)
 
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
-    def test_server_cpp(self, key, s):
-        result = call_xor_cipher_twice(self.stub_cpp, key, s)
+    def test_py_go(self, key, s):
+        result = call_xor_cipher_twice(self.stub_py, self.stub_cpp, key, s)
+        assert (result == s)
+
+    @given(key=at_least_one_utf8_char, s=utf8_chars)
+    @settings(max_examples=100)
+    def test_cpp_go(self, key, s):
+        result = call_xor_cipher_twice(self.stub_py, self.stub_cpp, key, s)
         assert (result == s)
