@@ -25,9 +25,20 @@ $ python3 -m grpc_tools.protoc -I../protos --python_out=. --grpc_python_out=. ..
 $ bash build_pb2.sh
 ```
 
-### run the lang-compare tests
+### start severs (each in new terminal)
+##### start python server
 ```bash
-# make changes to config.yaml as needed
-# the client python script will create subprocesses for all testing servers 
-$ python3 lang_compare_client.py 
+$ python3 server_example.py 
+```
+
+##### start cpp server
+```bash
+$ ../cpp/server_example 
+```
+
+### run all tests
+```bash
+# start all servers
+# make changes to config.yaml as needed 
+$ python3 client_example.py
 ```
