@@ -16,9 +16,9 @@ PROTOS_PATH = ../protos
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check lang_compare_server test_cpp_server
+all: system-check server_example test_cpp_server
 
-lang_compare_server: lang_compare.pb.o lang_compare.grpc.pb.o lib.o lang_compare_server.o
+server_example: lang_compare.pb.o lang_compare.grpc.pb.o lib.o server_example.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 test_cpp_server: lang_compare.pb.o lang_compare.grpc.pb.o lib.o test_cpp_server.o
@@ -33,7 +33,7 @@ test_cpp_server: lang_compare.pb.o lang_compare.grpc.pb.o lib.o test_cpp_server.
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h lang_compare_server test_cpp_server
+	rm -f *.o *.pb.cc *.pb.h server_example test_cpp_server
 
 
 # The following is to test your system and ensure a smoother experience.

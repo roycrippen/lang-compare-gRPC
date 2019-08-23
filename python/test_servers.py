@@ -35,8 +35,8 @@ class TestServers:
             servers[k] = Server(v)
         print("\n\nConnecting to servers...")
 
-        cls.stub_py = set_stub('py', servers['py'].port)
-        cls.stub_cpp = set_stub('cpp', servers['cpp'].port)
+        cls.stub_py = set_stub('py', servers['py_example'].port)
+        cls.stub_cpp = set_stub('cpp', servers['cpp_example'].port)
 
     @classmethod
     def teardown_class(cls):

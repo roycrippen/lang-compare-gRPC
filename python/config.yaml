@@ -3,17 +3,19 @@
 
 # servers providing function execution
 servers:
-  # python gRPC server
-  py:
+  # python gRPC test server
+  py_example:
     type: py
     port: 50051
-    cmd: python3 lang_compare_server.py
+    cmd: python3 server_example.py
 
-  # cpp gRPC server
-  cpp:
+  # cpp gRPC test server
+  # port is currently hard coded to 50052 in cpp source code
+  # don't change the port number below
+  cpp_example:
     type: cpp
     port: 50052
-    cmd: ../cpp/lang_compare_server
+    cmd: ../cpp/server_example
 
 #  - go:    # go gRPC server
 #      type: go
