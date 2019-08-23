@@ -36,8 +36,8 @@
 *.pb.h
 
 # cpp executables
-lang_compare_server
-test_cpp_server
+cpp/server_example
+cpp/test_cpp_server
 
 # python pb2 files
 *_pb2.py

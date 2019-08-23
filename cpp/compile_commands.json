@@ -43,5 +43,35 @@
    "server_example.cc"
   ],
   "file": "server_example.cc"
+ },
+ {
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-I/usr/local/include",
+   "-pthread",
+   "-c",
+   "-o",
+   "lang_compare.pb.o",
+   "lang_compare.pb.cc"
+  ],
+  "file": "lang_compare.pb.cc"
+ },
+ {
+  "directory": "/home/roy/dev/python/lang-compare-gpc/cpp",
+  "arguments": [
+   "g++",
+   "-std=c++11",
+   "-g",
+   "-I/usr/local/include",
+   "-pthread",
+   "-c",
+   "-o",
+   "lang_compare.grpc.pb.o",
+   "lang_compare.grpc.pb.cc"
+  ],
+  "file": "lang_compare.grpc.pb.cc"
  }
 ]
