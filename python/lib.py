@@ -1,3 +1,5 @@
+import time
+
 import yaml
 import grpc
 # from grpc._channel import _Rendezvous
@@ -20,14 +22,25 @@ def connect_server(port):
     port_str = 'localhost:{}'.format(port)
     channel = grpc.insecure_channel(port_str)
     stub = lang_compare_pb2_grpc.LangCompareStub(channel)
+    time.sleep(0.25)
 
     request = lang_compare_pb2.PingRequest()
     try:
         stub.Ping(request)
-    except Exception as e:
-        print("Could not connect to server on port {}".format(port))
-        raise e
+        return stub
+    except Exception as _e:
+        print("Could PING server on port {}".format(port))
+        # raise e
+        return None
 
+
+def set_stub(lang, port):
+    stub = connect_server(port)
+    if stub is None:
+        err_str = "\n  Could not connect to server (type, port): ({}, {})\n".format(lang, port)
+        err_str += "  Try starting the server."
+        raise RuntimeError(err_str)
+    print("Connected to server (type, port): ({:4}, {})".format(lang, port))
     return stub
 
 
@@ -50,15 +63,3 @@ class Server:
         self.type = dictionary['type']
         self.port = dictionary['port']
         self.cmd = dictionary['cmd']
-
-
-class Runner:
-    type = ""
-    cmd = ""
-    langs = []
-
-    def __init__(self, dictionary):
-        self.type = dictionary['type']
-        self.cmd = dictionary['cmd']
-        self.langs = dictionary['langs']
-
