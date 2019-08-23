@@ -1,26 +1,23 @@
 import subprocess
 import time
 
-from lib import read_config, Runner
+from lib import read_config
 
 if __name__ == '__main__':
     config = read_config('config.yaml')
 
     runners = {}
-    for elem in config['runners']:
-        k, v = list(elem.items())[0]
-        runner = Runner(v)
-        runners[k] = runner
+    for k, v in config['runners'].items():
+        runners[k] = v['cmd']
 
     for r in config['runs']:
-        runner = runners[r]
-        if runner.type == 'py':
-            print('run cmd: {}'.format(runner.cmd))
-            cmds = runner.cmd.split(' ')
+        if r in runners:
+            cmd = runners[r]
+            print('\n\n[RUN COMMAND]: {}'.format(cmd))
+            cmds = cmd.split(' ')
             subprocess.run(cmds)
-            time.sleep(1)
+            time.sleep(0.25)
         else:
-            err_str = "Invalid runner type in config.yaml: {}".format(runner.type)
+            err_str = "Invalid runner found in runs section of config.yaml: {}".format(r)
             raise RuntimeError(err_str)
-
 
