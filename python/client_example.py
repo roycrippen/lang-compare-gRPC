@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import *
 import time
 
 from lib import read_config
@@ -15,7 +15,7 @@ if __name__ == '__main__':
             cmd = runners[r]
             print('\n\n[RUN COMMAND]: {}'.format(cmd))
             cmds = cmd.split(' ')
-            subprocess.run(cmds)
+            run(cmds)
             time.sleep(0.25)
         else:
             err_str = "Invalid runner found in runs section of config.yaml: {}".format(r)

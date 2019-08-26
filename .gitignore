@@ -47,3 +47,5 @@ cpp/test_cpp_server
 .idea/*
 */.idea/*
 */.hypothesis/*
+*/target
+*.lock
