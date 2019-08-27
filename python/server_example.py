@@ -13,30 +13,23 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
 class LangCompare(lang_compare_pb2_grpc.LangCompareServicer):
-    call_count = 0
 
     def XorCipher(self, request, _context):
         # logging.debug("lib.xor_cipher, key='{}', in_str length = '{},".format(request.key, len(request.in_str)))
-        self.call_count += 1
         return lang_compare_pb2.XorCipherReply(out_str=lib.xor_cipher(request.key, request.in_str))
 
-    def Ping(self, _request, _context):
-        logging.info('Ping received.')
-        self.call_count += 1
+    def Ping(self, request, _context):
+        logging.info('Ping received from: {}'.format(request.in_str))
         return lang_compare_pb2.Pong()
 
-    def CallCount(self, _request, _context):
-        logging.info('Server call count: {}'.format(self.call_count))
-        return lang_compare_pb2.CallCountReply(out=self.call_count)
 
-
-def serve(port):
-    port_str = 'localhost:{}'.format(port)
+def serve(port_num):
+    port_str = 'localhost:{}'.format(port_num)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     lang_compare = LangCompare()
     lang_compare_pb2_grpc.add_LangCompareServicer_to_server(lang_compare, server)
-    port = server.add_insecure_port(port_str)
-    if port == 0:
+    port_num = server.add_insecure_port(port_str)
+    if port_num == 0:
         err_str = "Could not connect to server at port {}".format(port_str)
         logging.error(err_str)
         raise RuntimeError(err_str)

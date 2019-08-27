@@ -17,11 +17,13 @@ servers:
     port: 50052
     cmd: ../cpp/server_example
 
-#  - go:    # go gRPC server
-#      type: go
-#      port: 50053
-#      cmd: ../cpp/lang_compare_server
-
+  # rust gRPC server
+  # port is currently hard coded to 50053 in rust source code
+  # don't change the port number below
+  rust_example:
+      type: rust
+      port: 50053
+      cmd: cd ../rust; cargo run --bin example-server
 
 # available test runners to compare function results from multiple languages
 runners:

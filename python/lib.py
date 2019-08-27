@@ -8,6 +8,20 @@ import lang_compare_pb2_grpc
 import lang_compare_pb2
 
 
+class Server:
+    name = ""
+    type = ""
+    port = -1
+    cmd = ""
+    stub = None
+
+    def __init__(self, name, dictionary):
+        self.name = name
+        self.type = dictionary['type']
+        self.port = dictionary['port']
+        self.cmd = dictionary['cmd']
+
+
 def xor_cipher(key: str, in_str: str) -> str:
     key_len = len(key)
     ks = bytearray(key, encoding='utf-8')
@@ -18,29 +32,29 @@ def xor_cipher(key: str, in_str: str) -> str:
 
 
 # noinspection PyBroadException
-def connect_server(port):
-    port_str = 'localhost:{}'.format(port)
+def connect_server(script_name, server: Server):
+    port_str = 'localhost:{}'.format(server.port)
     channel = grpc.insecure_channel(port_str)
     stub = lang_compare_pb2_grpc.LangCompareStub(channel)
     time.sleep(0.25)
 
-    request = lang_compare_pb2.PingRequest()
+    request = lang_compare_pb2.PingRequest(in_str=script_name)
     try:
         stub.Ping(request)
         return stub
     except Exception as _e:
-        print("Could PING server on port {}".format(port))
+        print("Could not PING server on port {}".format(server.port))
         # raise e
         return None
 
 
-def set_stub(lang, port):
-    stub = connect_server(port)
+def set_stub(script_name, server: Server):
+    server_str = "server (type, port, name): ({:5}, {}, {})\n".format(server.type, server.port, server.name)
+    stub = connect_server(script_name, server)
     if stub is None:
-        err_str = "\n  Could not connect to server (type, port): ({}, {})\n".format(lang, port)
-        err_str += "  Try starting the server."
+        err_str = "\n  Could not connect to " + server_str + "\n  Try starting the server."
         raise RuntimeError(err_str)
-    print("Connected to server (type, port): ({:4}, {})".format(lang, port))
+    print("Connected to " + server_str)
     return stub
 
 
@@ -53,22 +67,10 @@ def read_config(file):
             print(exc)
 
 
-def load_server_stubs(file):
+def load_server_stubs(script_name, file):
     config = read_config('config.yaml')
     servers = {}
     for k, v in config['servers'].items():
-        servers[k] = Server(v)
-        servers[k].stub = set_stub(servers[k].type, servers[k].port)
+        servers[k] = Server(k, v)
+        servers[k].stub = set_stub(script_name, servers[k])
     return servers
-
-
-class Server:
-    type = ""
-    port = -1
-    cmd = ""
-    stub = None
-
-    def __init__(self, dictionary):
-        self.type = dictionary['type']
-        self.port = dictionary['port']
-        self.cmd = dictionary['cmd']
