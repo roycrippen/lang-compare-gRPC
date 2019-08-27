@@ -1,33 +1,5 @@
-[package]
-name = "tower-grpc-examples"
-version = "0.1.0"
-edition = "2018"
-authors = ["Carl Lerche <me@carllerche.com>"]
-publish = false
-
-[[bin]]
-name = "example-server"
-path = "src/server.rs"
-
-[[bin]]
-name = "example-client"
-path = "src/client.rs"
-
-[dependencies]
-futures = "0.1"
-bytes = "0.4"
-env_logger = { version = "0.5", default-features = false }
-log = "0.4"
-http = "0.1"
-prost = "0.5"
-tokio = "0.1"
-tower-request-modifier = "0.1.0"
-tower-hyper = "0.1"
-hyper = "0.12"
-tower-grpc = { version = "0.1.0", features = ["tower-hyper"] }
-tower-service = "0.2"
-tower-util = "0.1"
-
-[build-dependencies]
-tower-grpc-build = { version = "0.1.0", features = ["tower-hyper"] }
-
+[workspace]
+members = [
+  "server",
+  "stub",
+]
