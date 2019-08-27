@@ -8,12 +8,6 @@ use tower_grpc::{Request, Response};
 use tower_hyper::server::{Http, Server};
 use stub::langcompare::{server, XorCipherRequest, XorCipherReply, PingRequest, Pong};
 
-//use crate::lang_compare::{server, XorCipherRequest, XorCipherReply, PingRequest, Pong};
-//pub mod lang_compare {
-//    include!(concat!(env!("OUT_DIR"), "/langcompare.rs"));
-//}
-
-
 #[derive(Clone, Debug)]
 struct LC;
 
@@ -40,7 +34,6 @@ impl server::LangCompare for LC {
 pub fn main() {
     let _ = ::env_logger::init();
 
-//    let new_service = server::LangCompareServer::new(LC { call_count: 0 });
     let new_service = server::LangCompareServer::new(LC);
 
     let mut server = Server::new(new_service);
