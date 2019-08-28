@@ -7,6 +7,8 @@ use tokio::net::TcpListener;
 use tower_grpc::{Request, Response};
 use tower_hyper::server::{Http, Server};
 use stub::langcompare::{server, XorCipherRequest, XorCipherReply, PingRequest, Pong};
+use stub::utils::{get_server_port, xor_cipher};
+
 
 #[derive(Clone, Debug)]
 struct LC;
@@ -16,32 +18,32 @@ impl server::LangCompare for LC {
     type XorCipherFuture = future::FutureResult<Response<XorCipherReply>, tower_grpc::Status>;
     type PingFuture = future::FutureResult<Response<Pong>, tower_grpc::Status>;
 
-    fn xor_cipher(&mut self, _request: Request<XorCipherRequest>) -> Self::XorCipherFuture {
+    fn xor_cipher(&mut self, request: Request<XorCipherRequest>) -> Self::XorCipherFuture {
+        let r = request.into_inner();
         let response = Response::new(XorCipherReply {
-            out_str: "xor reply".to_string(),
+            out_str: xor_cipher(&r.key, &r.in_str),
         });
         future::ok(response)
     }
 
     fn ping(&mut self, request: Request<PingRequest>) -> Self::PingFuture {
-        println!("[INFO:Rust Server] -> Ping received from: {}", request.into_inner().in_str);
+        println!(
+            "[INFO:Rust Server] -> Ping received from: {}",
+            request.into_inner().in_str
+        );
         let response = Response::new(Pong {});
         future::ok(response)
     }
-
 }
 
 pub fn main() {
     let _ = ::env_logger::init();
-
     let new_service = server::LangCompareServer::new(LC);
-
     let mut server = Server::new(new_service);
-
     let http = Http::new().http2_only(true).clone();
 
-    // todo: read from config.yaml
-    let addr = "127.0.0.1:50053".parse().unwrap();
+    let port = get_server_port("../python/config.yaml");
+    let addr = format!("127.0.0.1:{}", port).parse().unwrap();
     let bind = TcpListener::bind(&addr).expect("bind");
 
     let serve = bind
@@ -51,7 +53,7 @@ pub fn main() {
                 return Err(e);
             }
 
-            let serve =  server.serve_with(sock, http.clone());
+            let serve = server.serve_with(sock, http.clone());
             tokio::spawn(serve.map_err(|e| error!("hyper error: {:?}", e)));
             Ok(())
         })
