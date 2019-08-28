@@ -43,15 +43,15 @@ class TestServers:
         result = call_xor_cipher_twice(self.stub_py, key, s)
         assert (result == s)
 
-    # @given(key=at_least_one_utf8_char, s=utf8_chars)
-    # @settings(max_examples=100)
-    # def test_server_cpp(self, key, s):
-    #     result = call_xor_cipher_twice(self.stub_cpp, key, s)
-    #     assert (result == s)
-    #
-    # @given(key=at_least_one_utf8_char, s=utf8_chars)
-    # @settings(max_examples=100)
-    # def test_server_rust(self, key, s):
-    #     # result = call_xor_cipher_twice(self.stub_rust, key, s)
-    #     result = s
-    #     assert (result == s)
+    @given(key=at_least_one_utf8_char, s=utf8_chars)
+    @settings(max_examples=100)
+    def test_server_cpp(self, key, s):
+        result = call_xor_cipher_twice(self.stub_cpp, key, s)
+        assert (result == s)
+
+    @given(key=at_least_one_utf8_char, s=utf8_chars)
+    @settings(max_examples=100)
+    def test_server_rust(self, key, s):
+        # result = call_xor_cipher_twice(self.stub_rust, key, s)
+        result = s
+        assert (result == s)
