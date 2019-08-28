@@ -9,9 +9,9 @@ publish = false
 name = "example-server"
 path = "src/server.rs"
 
-#[[bin]]
-#name = "example-client"
-#path = "src/client.rs"
+[[bin]]
+name = "example-client"
+path = "src/client.rs"
 
 [dependencies]
 futures = "0.1"

@@ -45,11 +45,11 @@ class TestXorCipher:
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
     def test_py_rust(self, key, s):
-        result = call_xor_cipher_twice(self.stub_py, self.stub_cpp, key, s)
+        result = call_xor_cipher_twice(self.stub_py, self.stub_rust, key, s)
         assert (result == s)
 
     @given(key=at_least_one_utf8_char, s=utf8_chars)
     @settings(max_examples=100)
     def test_rust_cpp(self, key, s):
-        result = call_xor_cipher_twice(self.stub_py, self.stub_cpp, key, s)
+        result = call_xor_cipher_twice(self.stub_rust, self.stub_cpp, key, s)
         assert (result == s)

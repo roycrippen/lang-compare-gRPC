@@ -2,29 +2,24 @@
 
 use futures::Future;
 use hyper::client::connect::{Destination, HttpConnector};
+use stub::utils::get_server_port;
 use tower_grpc::Request;
 use tower_hyper::{client, util};
 use tower_util::MakeService;
 
-pub mod hello_world {
-    include!(concat!(env!("OUT_DIR"), "/helloworld.rs"));
-}
+use tokio::runtime::current_thread::Runtime;
 
-pub fn main() {
-    let _ = ::env_logger::init();
-
-    let uri: http::Uri = format!("http://[::1]:50051").parse().unwrap();
-
+fn call_xor_cipher(key: String, msg: String, uri: http::Uri) -> Result<String, ()> {
     let dst = Destination::try_from_uri(uri.clone()).unwrap();
     let connector = util::Connector::new(HttpConnector::new(4));
     let settings = client::Builder::new().http2_only(true).clone();
     let mut make_client = client::Connect::with_builder(connector, settings);
 
-    let say_hello = make_client
+    let f = make_client
         .make_service(dst)
         .map_err(|e| panic!("connect error: {:?}", e))
         .and_then(move |conn| {
-            use crate::hello_world::client::Greeter;
+            use stub::langcompare::client::LangCompare;
 
             let conn = tower_request_modifier::Builder::new()
                 .set_origin(uri)
@@ -32,22 +27,39 @@ pub fn main() {
                 .unwrap();
 
             // Wait until the client is ready...
-            Greeter::new(conn).ready()
+            LangCompare::new(conn).ready()
         })
         .and_then(|mut client| {
-            use crate::hello_world::HelloRequest;
+            use stub::langcompare::XorCipherRequest;
 
-            client.say_hello(Request::new(HelloRequest {
-                name: "What is in a name?".to_string(),
+            client.xor_cipher(Request::new(XorCipherRequest {
+                key: key.clone(),
+                in_str: msg.clone(),
             }))
         })
         .and_then(|response| {
-            println!("RESPONSE = {:?}", response);
-            Ok(())
+            let res = response.into_inner().out_str;
+            Ok(res)
         })
         .map_err(|e| {
             println!("ERR = {:?}", e);
         });
 
-    tokio::run(say_hello);
+    let mut runtime = Runtime::new().unwrap();
+    let result = runtime.block_on(f);
+    result
+}
+
+pub fn main() {
+    let port = get_server_port("../python/config.yaml");
+    let uri: http::Uri = format!("http://127.0.0.1:{}", port).parse().unwrap();
+    println!("uri = {:?}", uri);
+
+    let key = "some key".to_owned();
+    let msg = "this is some message".to_owned();
+    let result_first = call_xor_cipher(key.clone(), msg.clone(), uri.clone()).unwrap();
+    let result = call_xor_cipher(key.clone(), result_first, uri).unwrap();
+    println!("                original msg: '{}'", msg.clone());
+    println!("xor_cipher applied twice msg: '{}'", result.clone());
+    assert_eq!(msg, result)
 }
