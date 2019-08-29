@@ -3,6 +3,9 @@
 depends on grpcio, grpcio-tools, hypothesis and pyyaml
 
 also see [cpp dependencies](../cpp/README.md)
+and see [rust dependencies](../rust/README.md)
+
+cpp and rust servers need to be built
 
 ### install dependencies
 ```bash
@@ -36,9 +39,16 @@ $ python3 server_example.py
 $ ../cpp/server_example 
 ```
 
-### run all tests
+##### start rust server
+```bash
+$ cd rust
+$ cargo run --bin example-server --release
+```
+
+##### run all tests
 ```bash
 # start all servers
 # make changes to config.yaml as needed 
+# then run the tests
 $ python3 client_example.py
 ```
