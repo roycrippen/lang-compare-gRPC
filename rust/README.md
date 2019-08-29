@@ -13,12 +13,16 @@ cargo build --release
 ### start server
 ```bash
 # start server
+$ target/release/example-server
+# or
 $ cargo run --bin example-server --release
 ```
 
 ### run test client (in new terminal)
 ```bash
 # run test client
+$ target/release/example-client
+# or
 $ cargo run --bin example-client --release
 ```
 

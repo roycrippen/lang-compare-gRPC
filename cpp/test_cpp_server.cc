@@ -11,15 +11,15 @@ using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
+using langcompare::LangCompare;
 using langcompare::PingRequest;
 using langcompare::Pong;
-using langcompare::XorCipherRequest;
 using langcompare::XorCipherReply;
-using langcompare::LangCompare;
+using langcompare::XorCipherRequest;
 
 class LangCompareClient {
 public:
-    explicit LangCompareClient(const shared_ptr<Channel>& channel)
+    explicit LangCompareClient(const shared_ptr <Channel> &channel)
             : stub_(LangCompare::NewStub(channel)) {}
 
     // Assembles the client's payload, sends it and presents the response back
@@ -48,6 +48,7 @@ public:
     bool ping() {
         // Data we are sending to the server.
         PingRequest request;
+        request.set_in_str("test_cpp_server");
 
         // Container for the data we expect from the server.
         Pong reply;
@@ -62,13 +63,15 @@ public:
     }
 
 private:
-    unique_ptr<LangCompare::Stub> stub_;
+    unique_ptr <LangCompare::Stub> stub_;
 };
 
 void test_xor_cipher_cpp(string port) {
-    LangCompareClient compare(grpc::CreateChannel("localhost:" + port, grpc::InsecureChannelCredentials()));
+    LangCompareClient compare(grpc::CreateChannel(
+            "localhost:" + port, grpc::InsecureChannelCredentials()));
     if (!compare.ping()) {
-        cout << "Ping of server failed, aborting." << "\n";
+        cout << "Ping of server failed, aborting."
+             << "\n";
         return;
     }
 
