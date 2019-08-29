@@ -1,9 +1,10 @@
-# lang-compare-gpc
+# lang-compare-gRPC
 Multi-language property base testing using gRPC. 
 
-[python client runner and python server applications](python/README.md)
+[test client and python server](python/README.md)
 
-[cpp server application](cpp/README.md)
+[cpp server](cpp/README.md)
 
+[rust server](rust/README.md)
 
 
